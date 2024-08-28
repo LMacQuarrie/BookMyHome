@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.Api", "BookMyHome.Api\BookMyHome.Api.csproj", "{050DAFCD-D5C4-4BCF-989B-D39EEFF225E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.Application", "BookMyHome.Application\BookMyHome.Application.csproj", "{3C5A73C3-A1BC-4AA5-918A-2FA10DAE7F75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.Domain", "BookMyHome.Domain\BookMyHome.Domain.csproj", "{DB651213-F629-46BC-8F0D-6A58FC69965A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.Domain.Test", "BookMyHome.Domain.Test\BookMyHome.Domain.Test.csproj", "{FBBD2EEA-FA62-4660-BA87-1A6C99203255}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.Infrastructure", "BookMyHome.Infrastructure\BookMyHome.Infrastructure.csproj", "{B50961BD-B1C1-4AC6-A0F0-C30D0B315AC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMyHome.DatabaseMigration", "BookMyHome.DatabaseMigration\BookMyHome.DatabaseMigration.csproj", "{07A7DA8B-C625-46F1-91AD-4429B8D719B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{050DAFCD-D5C4-4BCF-989B-D39EEFF225E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050DAFCD-D5C4-4BCF-989B-D39EEFF225E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050DAFCD-D5C4-4BCF-989B-D39EEFF225E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050DAFCD-D5C4-4BCF-989B-D39EEFF225E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5A73C3-A1BC-4AA5-918A-2FA10DAE7F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5A73C3-A1BC-4AA5-918A-2FA10DAE7F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5A73C3-A1BC-4AA5-918A-2FA10DAE7F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5A73C3-A1BC-4AA5-918A-2FA10DAE7F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB651213-F629-46BC-8F0D-6A58FC69965A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB651213-F629-46BC-8F0D-6A58FC69965A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB651213-F629-46BC-8F0D-6A58FC69965A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB651213-F629-46BC-8F0D-6A58FC69965A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBD2EEA-FA62-4660-BA87-1A6C99203255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBD2EEA-FA62-4660-BA87-1A6C99203255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBD2EEA-FA62-4660-BA87-1A6C99203255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBD2EEA-FA62-4660-BA87-1A6C99203255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50961BD-B1C1-4AC6-A0F0-C30D0B315AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50961BD-B1C1-4AC6-A0F0-C30D0B315AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50961BD-B1C1-4AC6-A0F0-C30D0B315AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50961BD-B1C1-4AC6-A0F0-C30D0B315AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A7DA8B-C625-46F1-91AD-4429B8D719B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A7DA8B-C625-46F1-91AD-4429B8D719B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A7DA8B-C625-46F1-91AD-4429B8D719B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A7DA8B-C625-46F1-91AD-4429B8D719B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
