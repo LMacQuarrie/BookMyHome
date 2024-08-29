@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Domain.DomainServices;
 
 namespace BookMyHome.Domain.Test.Fakes
 {
@@ -13,6 +14,11 @@ namespace BookMyHome.Domain.Test.Fakes
         {
             StartDate = startDate;
             EndDate = endDate;
+        }
+
+        public new void AssureNoOverLapping(IEnumerable<Booking> otherBookings)
+        {
+            base.AssureNoOverLapping(otherBookings);
         }
     }
 }

@@ -9,7 +9,7 @@ using BookMyHome.Domain.Test.Fakes;
 
 namespace BookMyHome.Domain.Test
 {
-    public class CheckBookingTests
+    public class BookingDomainServiceTests
     {
         [Theory]
         [InlineData("10-04-2020", "14-04-2020")]
@@ -31,11 +31,11 @@ namespace BookMyHome.Domain.Test
                 new FakeBooking(DateOnly.Parse("17-12-2024"), DateOnly.Parse("24-12-2024"))
             };
 
-            var sut = new CheckBooking();
+            var sut = new FakeBooking(booking.StartDate, booking.EndDate);
 
             // Act & Assert
 
-            sut.IsOverLapping(booking, otherBookings);
+            sut.AssureNoOverLapping(otherBookings);
         }
 
         [Theory]
@@ -57,10 +57,10 @@ namespace BookMyHome.Domain.Test
                 new FakeBooking(DateOnly.Parse("28-08-2024"), DateOnly.Parse("06-09-2024"))
             };
 
-            var sut = new CheckBooking();
+            var sut = new FakeBooking(booking.StartDate, booking.EndDate);
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.IsOverLapping(booking, otherBookings));
+            Assert.Throws<ArgumentException>(() => sut.AssureNoOverLapping(otherBookings));
 
         }
     }

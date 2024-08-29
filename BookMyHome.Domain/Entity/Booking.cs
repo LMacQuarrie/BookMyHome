@@ -15,24 +15,44 @@ namespace BookMyHome.Domain.Entity
         public DateOnly StartDate { get; protected set; }
         public DateOnly EndDate { get; protected set; }
 
-        public static Booking Create(DateOnly startDate, DateOnly endDate, ICheckBooking checkBooking,
-            IEnumerable<Booking> otherBookings)
+        protected Booking() { }
+
+        private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
         {
             AssureBookingInFuture(startDate, DateOnly.FromDateTime(DateTime.Now));
 
             AssureStartDateBeforeEndDate(startDate, endDate);
 
-            var booking = new Booking
-            {
-                StartDate = startDate,
-                EndDate = endDate
-            };
+            StartDate = startDate;
+            EndDate = endDate;
 
-            checkBooking.IsOverLapping(booking, otherBookings);
+            AssureNoOverLapping(bookingDomainService.GetOtherBookings(this));
+        }
+
+        public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService,
+            IEnumerable<Booking> otherBookings)
+        {
+            return new Booking(startDate, endDate, bookingDomainService);
+        }
+
+        //public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService,
+        //    IEnumerable<Booking> otherBookings)
+        //{
+        //    AssureBookingInFuture(startDate, DateOnly.FromDateTime(DateTime.Now));
+
+        //    AssureStartDateBeforeEndDate(startDate, endDate);
+
+        //    var booking = new Booking
+        //    {
+        //        StartDate = startDate,
+        //        EndDate = endDate
+        //    };
+
+        //    bookingDomainService.AssureNoOverLapping(booking, otherBookings);
 
             
-            return booking;
-        }
+        //    return booking;
+        //}
 
         // Booking skal være i fremtiden
         internal static void AssureBookingInFuture(DateOnly startDate, DateOnly now)
@@ -49,6 +69,17 @@ namespace BookMyHome.Domain.Entity
             if (startDate >= endDate)
             {
                 throw new ArgumentException("Startdate skal være før enddate");
+            }
+        }
+
+        protected void AssureNoOverLapping(IEnumerable<Booking> otherBookings)
+        {
+            foreach (var otherBooking in otherBookings)
+            {
+                if (this.StartDate <= otherBooking.EndDate && this.EndDate >= otherBooking.StartDate)
+                {
+                    throw new ArgumentException("Booking overlapper med en anden booking");
+                }
             }
         }
     }

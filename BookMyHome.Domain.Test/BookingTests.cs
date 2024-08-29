@@ -19,6 +19,8 @@ namespace BookMyHome.Domain.Test
             var startDate = DateOnly.Parse(startDateString);
             var nowDate = DateOnly.Parse(nowDateString);
 
+            
+
             // Act & Assert
             Booking.AssureBookingInFuture(startDate, nowDate);
         }
