@@ -12,6 +12,7 @@ namespace BookMyHome.Domain.Entity
 {
     public class Booking
     {
+        public int Id { get; protected set; }
         public DateOnly StartDate { get; protected set; }
         public DateOnly EndDate { get; protected set; }
 
