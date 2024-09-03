@@ -36,24 +36,7 @@ namespace BookMyHome.Domain.Entity
             return new Booking(startDate, endDate, bookingDomainService);
         }
 
-        //public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService,
-        //    IEnumerable<Booking> otherBookings)
-        //{
-        //    AssureBookingInFuture(startDate, DateOnly.FromDateTime(DateTime.Now));
-
-        //    AssureStartDateBeforeEndDate(startDate, endDate);
-
-        //    var booking = new Booking
-        //    {
-        //        StartDate = startDate,
-        //        EndDate = endDate
-        //    };
-
-        //    bookingDomainService.AssureNoOverLapping(booking, otherBookings);
-
-            
-        //    return booking;
-        //}
+        
 
         // Booking skal være i fremtiden
         internal static void AssureBookingInFuture(DateOnly startDate, DateOnly now)
