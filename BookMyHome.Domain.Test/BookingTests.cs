@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Domain.Test.Fakes;
 
 namespace BookMyHome.Domain.Test
 {
@@ -16,13 +17,11 @@ namespace BookMyHome.Domain.Test
         public void Given_StartDate_In_Future__Then_Valid(string startDateString, string nowDateString)
         {
             // Arrange
-            var startDate = DateOnly.Parse(startDateString);
-            var nowDate = DateOnly.Parse(nowDateString);
 
-            
+            var sut = new FakeBooking(DateOnly.Parse(startDateString), DateOnly.MaxValue);
 
             // Act & Assert
-            Booking.AssureBookingInFuture(startDate, nowDate);
+            sut.AssureBookingInFuture(DateOnly.Parse(nowDateString));
         }
 
         [Theory]
@@ -32,12 +31,12 @@ namespace BookMyHome.Domain.Test
         public void Given_StartDate_In_Past__Then_Exception(string startDateString, string nowDateString)
         {
             // Arrange
-            var startDate = DateOnly.Parse(startDateString);
-            var nowDate = DateOnly.Parse(nowDateString);
+
+            var sut = new FakeBooking(DateOnly.Parse(startDateString), DateOnly.MaxValue);
 
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => Booking.AssureBookingInFuture(startDate, nowDate));
+            Assert.Throws<ArgumentException>(() => sut.AssureBookingInFuture(DateOnly.Parse(nowDateString)));
         }
 
         [Theory]
@@ -50,9 +49,10 @@ namespace BookMyHome.Domain.Test
             var startDate = DateOnly.Parse(startDateString);
             var endDate = DateOnly.Parse(endDateString);
 
+            var sut = new FakeBooking(startDate, endDate);
 
             // Act & Assert
-            Booking.AssureStartDateBeforeEndDate(startDate, endDate);
+            sut.AssureStartDateBeforeEndDate();
         }
 
         [Theory]
@@ -65,9 +65,10 @@ namespace BookMyHome.Domain.Test
             var startDate = DateOnly.Parse(startDateString);
             var endDate = DateOnly.Parse(endDateString);
 
+            var sut = new FakeBooking(startDate, endDate);
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => Booking.AssureStartDateBeforeEndDate(startDate, endDate));
+            Assert.Throws<ArgumentException>(() => sut.AssureStartDateBeforeEndDate());
         }
 
     }

@@ -9,7 +9,7 @@ using BookMyHome.Domain.Test.Fakes;
 
 namespace BookMyHome.Domain.Test
 {
-    public class BookingDomainServiceTests
+    public class BookingAssureNoOverlappingTests
     {
         [Theory]
         [InlineData("10-04-2020", "14-04-2020")]

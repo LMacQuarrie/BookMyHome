@@ -20,5 +20,15 @@ namespace BookMyHome.Domain.Test.Fakes
         {
             base.AssureNoOverLapping(otherBookings);
         }
+
+        public new void AssureBookingInFuture(DateOnly now)
+        {
+            base.AssureBookingInFuture(now);
+        }
+
+        public new void AssureStartDateBeforeEndDate()
+        {
+            base.AssureStartDateBeforeEndDate();
+        }
     }
 }
