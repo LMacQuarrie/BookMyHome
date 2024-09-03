@@ -20,9 +20,12 @@ namespace BookMyHome.Domain.Entity
 
         private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
         {
-            AssureBookingInFuture(startDate, DateOnly.FromDateTime(DateTime.Now));
+            AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
 
-            AssureStartDateBeforeEndDate(startDate, endDate);
+            StartDate = startDate;
+            EndDate = endDate;
+
+            AssureStartDateBeforeEndDate();
 
             StartDate = startDate;
             EndDate = endDate;
@@ -36,21 +39,19 @@ namespace BookMyHome.Domain.Entity
             return new Booking(startDate, endDate, bookingDomainService);
         }
 
-        
 
-        // Booking skal være i fremtiden
-        internal static void AssureBookingInFuture(DateOnly startDate, DateOnly now)
+        protected void AssureBookingInFuture(DateOnly now)
         {
-            if (startDate <= now)
+            if (StartDate <= now)
             {
                 throw new ArgumentException("Booking skal være i fremtiden");
             }
         }
 
         // StartDato skal være før EndDato
-        internal static void AssureStartDateBeforeEndDate(DateOnly startDate, DateOnly endDate)
+        protected void AssureStartDateBeforeEndDate()
         {
-            if (startDate >= endDate)
+            if (StartDate >= EndDate)
             {
                 throw new ArgumentException("Startdate skal være før enddate");
             }
@@ -68,3 +69,29 @@ namespace BookMyHome.Domain.Entity
         }
     }
 }
+
+
+
+
+
+
+//public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService,
+//    IEnumerable<Booking> otherBookings)
+//{
+//    AssureBookingInFuture(startDate, DateOnly.FromDateTime(DateTime.Now));
+
+//    AssureStartDateBeforeEndDate(startDate, endDate);
+
+//    var booking = new Booking
+//    {
+//        StartDate = startDate,
+//        EndDate = endDate
+//    };
+
+//    bookingDomainService.AssureNoOverLapping(booking, otherBookings);
+
+
+//    return booking;
+//}
+
+// Booking skal være i fremtiden
