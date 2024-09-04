@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Application.Commands.CommandDto;
 using BookMyHome.Domain.DomainServices;
 using BookMyHome.Domain.Entity;
 
@@ -17,10 +18,10 @@ namespace BookMyHome.Application.Commands
             _domainService = domainService;
             _repository = repository;
         }
-        void IBookingCommand.CreateBooking(CreateBookingDto bookingDto)
+        void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
         {
             // Do
-            var booking = Booking.Create(bookingDto.StartDate, bookingDto.EndDate, _domainService);
+            var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, _domainService);
             // Save
             _repository.AddBooking(booking);
         }

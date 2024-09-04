@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookMyHome.Application.Query;
+using BookMyHome.Application.Query.QueryDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookMyHome.Infrastructure.Queries

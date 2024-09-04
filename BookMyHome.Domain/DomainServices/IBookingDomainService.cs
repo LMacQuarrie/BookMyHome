@@ -12,12 +12,4 @@ namespace BookMyHome.Domain.DomainServices
     {
         IEnumerable<Booking> GetOtherBookings(Booking booking);
     }
-
-    public class BookingDomainService : IBookingDomainService
-    {
-        public IEnumerable<Booking> GetOtherBookings(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

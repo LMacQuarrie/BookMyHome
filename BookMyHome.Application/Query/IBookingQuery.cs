@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Application.Query.QueryDto;
 using BookMyHome.Domain.Entity;
 
 namespace BookMyHome.Application.Query
@@ -12,16 +13,5 @@ namespace BookMyHome.Application.Query
     {
         BookingDto GetBooking(int Id);
         IEnumerable<BookingDto> GetBookings();
-    }
-
-
-    // Dto = Data Transfer Object
-    public class BookingDto
-    {
-        public int Id { get; set; }
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
-        
-        public byte[] RowVersion { get; set; }
     }
 }
