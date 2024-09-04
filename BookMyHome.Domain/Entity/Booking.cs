@@ -20,21 +20,14 @@ namespace BookMyHome.Domain.Entity
 
         private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
         {
+            StartDate = startDate;
+            EndDate = endDate;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
-
-            StartDate = startDate;
-            EndDate = endDate;
-
             AssureStartDateBeforeEndDate();
-
-            StartDate = startDate;
-            EndDate = endDate;
-
             AssureNoOverLapping(bookingDomainService.GetOtherBookings(this));
         }
 
-        public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService,
-            IEnumerable<Booking> otherBookings)
+        public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
         {
             return new Booking(startDate, endDate, bookingDomainService);
         }
@@ -66,6 +59,15 @@ namespace BookMyHome.Domain.Entity
                     throw new ArgumentException("Booking overlapper med en anden booking");
                 }
             }
+        }
+
+        public void Update(DateOnly startDate, DateOnly endDate, IBookingDomainService domainService)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
+            AssureStartDateBeforeEndDate();
+            AssureNoOverLapping(domainService.GetOtherBookings(this));
         }
     }
 }

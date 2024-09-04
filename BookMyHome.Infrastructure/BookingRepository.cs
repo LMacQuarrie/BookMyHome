@@ -22,6 +22,11 @@ namespace BookMyHome.Infrastructure
             _db.SaveChanges();
         }
 
+        void IBookingRepository.UpdateBooking(Booking booking)
+        {
+            _db.SaveChanges();
+        }
+
         Booking IBookingRepository.GetBooking(int id)
         {
             return _db.Bookings.Single(booking => booking.Id == id);
