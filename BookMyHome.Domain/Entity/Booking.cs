@@ -1,6 +1,7 @@
 ﻿using BookMyHome.Domain.DomainServices;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,6 +16,9 @@ namespace BookMyHome.Domain.Entity
         public int Id { get; protected set; }
         public DateOnly StartDate { get; protected set; }
         public DateOnly EndDate { get; protected set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; protected set; }
 
         protected Booking() { }
 

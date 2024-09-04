@@ -41,7 +41,7 @@ namespace BookMyHome.Application.Commands
             booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
 
             // Save
-            _repository.UpdateBooking(booking);
+            _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
         }
     }
 }
