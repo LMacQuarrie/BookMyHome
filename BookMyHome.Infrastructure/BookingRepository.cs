@@ -12,6 +12,7 @@ namespace BookMyHome.Infrastructure
     public class BookingRepository : IBookingRepository
     {
         private readonly BookMyHomeContext _db;
+
         public BookingRepository(BookMyHomeContext context)
         {
             _db = context;
@@ -21,12 +22,10 @@ namespace BookMyHome.Infrastructure
             _db.Bookings.Add(booking);
             _db.SaveChanges();
         }
-
         void IBookingRepository.UpdateBooking(Booking booking)
         {
             _db.SaveChanges();
         }
-
         Booking IBookingRepository.GetBooking(int id)
         {
             return _db.Bookings.Single(booking => booking.Id == id);
