@@ -13,16 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<IBookingCommand, BookingCommand>();
-builder.Services.AddScoped<IBookingQuery, BookingQuery>();
-builder.Services.AddScoped<IBookingDomainService, BookingDomainService>();
 
-
-//Add-Migration InitialMigration -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
-//Update-Database -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
-builder.Services.AddDbContext<BookMyHomeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyHomeDbConnection"),
-    x => x.MigrationsAssembly("BookMyHome.DatabaseMigration")));
+// Application and Infrastructure services
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 
 var app = builder.Build();
@@ -62,3 +56,22 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+
+
+
+
+
+
+
+
+//builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+//builder.Services.AddScoped<IBookingCommand, BookingCommand>();
+//builder.Services.AddScoped<IBookingQuery, BookingQuery>();
+//builder.Services.AddScoped<IBookingDomainService, BookingDomainService>();
+
+
+////Add-Migration InitialMigration -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
+////Update-Database -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
+//builder.Services.AddDbContext<BookMyHomeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyHomeDbConnection"),
+//    x => x.MigrationsAssembly("BookMyHome.DatabaseMigration")));
