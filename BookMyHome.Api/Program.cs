@@ -1,5 +1,6 @@
 using BookMyHome.Application;
 using BookMyHome.Application.Commands;
+using BookMyHome.Application.Commands.CommandDto;
 using BookMyHome.Application.Query;
 using BookMyHome.Domain.DomainServices;
 using BookMyHome.Infrastructure;
@@ -30,32 +31,50 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("/hello", () => "Hello world");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapGet("/booking", (IBookingQuery query) => query.GetBookings());
+app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id));
+app.MapPost("/booking",
+    (CreateBookingDto createBookingDto, IBookingCommand bookingCommand) =>
+        bookingCommand.CreateBooking(createBookingDto));
+app.MapPut("/booking",
+    (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) =>
+        bookingCommand.UpdateBooking(updateBookingDto));
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+
+
+
+
+
+
+//var summaries = new[]
+//{
+//    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+//};
+
+//app.MapGet("/weatherforecast", () =>
+//{
+//    var forecast =  Enumerable.Range(1, 5).Select(index =>
+//        new WeatherForecast
+//        (
+//            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//            Random.Shared.Next(-20, 55),
+//            summaries[Random.Shared.Next(summaries.Length)]
+//        ))
+//        .ToArray();
+//    return forecast;
+//})
+//.WithName("GetWeatherForecast")
+//.WithOpenApi();
+
+//record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+//{
+//    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+//}
 
 
 
