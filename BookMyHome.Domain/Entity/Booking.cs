@@ -69,6 +69,8 @@ namespace BookMyHome.Domain.Entity
             AssureStartDateBeforeEndDate();
             AssureNoOverLapping(domainService.GetOtherBookings(this));
         }
+
+        
     }
 }
 

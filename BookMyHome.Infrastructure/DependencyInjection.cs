@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Domain.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookMyHome.Infrastructure
@@ -20,6 +21,7 @@ namespace BookMyHome.Infrastructure
             services.AddScoped<IBookingQuery, BookingQuery>();
             services.AddScoped<IBookingDomainService, BookingDomainService>();
             services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Database
             // https://github.com/dotnet/SqlClient/issues/2239

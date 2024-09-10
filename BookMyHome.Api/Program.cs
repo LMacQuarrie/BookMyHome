@@ -5,6 +5,7 @@ using BookMyHome.Application.Query;
 using BookMyHome.Domain.DomainServices;
 using BookMyHome.Infrastructure;
 using BookMyHome.Infrastructure.Queries;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,9 @@ app.MapPost("/booking",
 app.MapPut("/booking",
     (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) =>
         bookingCommand.UpdateBooking(updateBookingDto));
+app.MapDelete("/booking",
+    ([FromBody] DeleteBookingDto deleteBookingDto, IBookingCommand BookingCommand) =>
+        BookingCommand.DeleteBooking(deleteBookingDto));
 
 
 app.Run();

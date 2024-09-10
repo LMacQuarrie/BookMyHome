@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookMyHome.Application;
 using BookMyHome.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookMyHome.Infrastructure
 {
@@ -27,9 +28,19 @@ namespace BookMyHome.Infrastructure
             _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
             _db.SaveChanges();
         }
+
+        void IBookingRepository.DeleteBooking(Booking booking, byte[] rowVersion)
+        {
+            _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            _db.Bookings.Remove(booking);
+            _db.SaveChanges();
+        }
+
         Booking IBookingRepository.GetBooking(int id)
         {
             return _db.Bookings.Single(booking => booking.Id == id);
         }
+
+        
     }
 }
