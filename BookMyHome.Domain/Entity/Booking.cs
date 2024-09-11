@@ -17,7 +17,7 @@ namespace BookMyHome.Domain.Entity
         public DateOnly EndDate { get; protected set; }
 
         //nav prop
-        public Accommodation Accommodation { get; set; }
+        public Accommodation Accommodation { get; protected set; }
 
         protected Booking() { }
 

@@ -13,24 +13,28 @@ namespace BookMyHome.Application.Commands
     public class BookingCommand : IBookingCommand
     {
         private readonly IBookingDomainService _domainService;
-        private readonly IBookingRepository _repository;
+        private readonly IBookingRepository _bookingRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAccommodationRepository _accommodationRepository;
 
-        public BookingCommand(IBookingRepository repository, IBookingDomainService domainService, IUnitOfWork unitOfWork)
+        public BookingCommand(IBookingRepository bookingRepository, IAccommodationRepository accommodationRepository, IBookingDomainService domainService, IUnitOfWork unitOfWork)
         {
             _domainService = domainService;
-            _repository = repository;
+            _bookingRepository = bookingRepository;
+            _accommodationRepository = accommodationRepository;
             _unitOfWork = unitOfWork;
         }
         void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
         {
+            var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
             try
             {
                 _unitOfWork.BeginTransaction();
                 // Do
-                var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate,  _domainService);
+                var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, accommodation,  _domainService);
+                
                 // Save
-                _repository.AddBooking(booking);
+                _bookingRepository.AddBooking(booking);
 
                 //Commit to db
                 _unitOfWork.Commit();
@@ -48,14 +52,14 @@ namespace BookMyHome.Application.Commands
             {
                 _unitOfWork.BeginTransaction();
                 // Load
-                var booking = _repository.GetBooking(updateBookingDto.Id);
+                var booking = _bookingRepository.GetBooking(updateBookingDto.Id);
 
                 // Do
                 booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
-                _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
+                _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
                 // Save
-                _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
+                _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
                 //Commit to db
                 _unitOfWork.Commit();
@@ -73,10 +77,10 @@ namespace BookMyHome.Application.Commands
             {
                 _unitOfWork.BeginTransaction();
                 // Load
-                var booking = _repository.GetBooking(deleteBookingDto.Id);
+                var booking = _bookingRepository.GetBooking(deleteBookingDto.Id);
 
                 // (Do &) Save
-                _repository.DeleteBooking(booking, deleteBookingDto.RowVersion);
+                _bookingRepository.DeleteBooking(booking, deleteBookingDto.RowVersion);
 
                 // Commmit to db
                 _unitOfWork.Commit();

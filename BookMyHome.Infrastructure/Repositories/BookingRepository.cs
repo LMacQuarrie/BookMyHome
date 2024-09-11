@@ -8,7 +8,7 @@ using BookMyHome.Application;
 using BookMyHome.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookMyHome.Infrastructure
+namespace BookMyHome.Infrastructure.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
@@ -38,9 +38,11 @@ namespace BookMyHome.Infrastructure
 
         Booking IBookingRepository.GetBooking(int id)
         {
-            return _db.Bookings.Single(booking => booking.Id == id);
+            return _db.Bookings
+                .Include(b => b.Accommodation)
+                .Single(booking => booking.Id == id);
         }
 
-        
+
     }
 }

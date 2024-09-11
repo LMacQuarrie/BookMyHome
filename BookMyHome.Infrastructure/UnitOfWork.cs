@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BookMyHome.Infrastructure;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork<T> : IUnitOfWork where T : DbContext
 {
     private readonly DbContext _db;
     private IDbContextTransaction? _transaction;
 
-    public UnitOfWork(DbContext db)
+    public UnitOfWork(T db)
     {
         _db = db;
     }

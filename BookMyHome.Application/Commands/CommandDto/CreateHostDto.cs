@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookMyHome.Domain.DomainServices
+namespace BookMyHome.Application.Commands.CommandDto
 {
-    public interface IAccommodationDomainService
+    public record CreateHostDto
     {
-        
+        public string FirstName { get; set; }
     }
 }
