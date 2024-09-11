@@ -28,7 +28,7 @@ namespace BookMyHome.Application.Commands
             {
                 _unitOfWork.BeginTransaction();
                 // Do
-                var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, _domainService);
+                var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate,  _domainService);
                 // Save
                 _repository.AddBooking(booking);
 
