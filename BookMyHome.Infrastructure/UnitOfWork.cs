@@ -7,10 +7,10 @@ namespace BookMyHome.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly BookMyHomeContext _db;
+    private readonly DbContext _db;
     private IDbContextTransaction? _transaction;
 
-    public UnitOfWork(BookMyHomeContext db)
+    public UnitOfWork(DbContext db)
     {
         _db = db;
     }

@@ -21,7 +21,11 @@ namespace BookMyHome.Infrastructure
             services.AddScoped<IBookingQuery, BookingQuery>();
             services.AddScoped<IBookingDomainService, BookingDomainService>();
             services.AddScoped<IBookingRepository, BookingRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>(p =>
+            {
+                var db = p.GetService<BookMyHomeContext>();
+                return new UnitOfWork(db);
+            });
 
             // Database
             // https://github.com/dotnet/SqlClient/issues/2239
