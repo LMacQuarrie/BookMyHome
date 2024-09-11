@@ -36,15 +36,12 @@ app.MapGet("/hello", () => "Hello world");
 
 app.MapGet("/booking", (IBookingQuery query) => query.GetBookings());
 app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id));
-app.MapPost("/booking",
-    (CreateBookingDto createBookingDto, IBookingCommand bookingCommand) =>
-        bookingCommand.CreateBooking(createBookingDto));
-app.MapPut("/booking",
-    (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) =>
-        bookingCommand.UpdateBooking(updateBookingDto));
-app.MapDelete("/booking",
-    ([FromBody] DeleteBookingDto deleteBookingDto, IBookingCommand BookingCommand) =>
-        BookingCommand.DeleteBooking(deleteBookingDto));
+app.MapPost("/booking", (CreateBookingDto createBookingDto, IBookingCommand bookingCommand) => 
+    bookingCommand.CreateBooking(createBookingDto));
+app.MapPut("/booking", (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) => 
+    bookingCommand.UpdateBooking(updateBookingDto));
+app.MapDelete("/booking", ([FromBody] DeleteBookingDto deleteBookingDto, IBookingCommand BookingCommand) => 
+    BookingCommand.DeleteBooking(deleteBookingDto));
 
 
 app.Run();

@@ -1,6 +1,6 @@
 ﻿namespace BookMyHome.Application.Commands.CommandDto;
 
-public class UpdateBookingDto
+public record UpdateBookingDto
 {
     public int Id { get; set; }
     public DateOnly StartDate { get; set; }
