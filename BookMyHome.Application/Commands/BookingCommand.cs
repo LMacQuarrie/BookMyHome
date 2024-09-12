@@ -26,10 +26,13 @@ namespace BookMyHome.Application.Commands
         }
         void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
         {
-            var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
             try
             {
                 _unitOfWork.BeginTransaction();
+
+                // Load
+                var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
+                
                 // Do
                 var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, accommodation,  _domainService);
                 

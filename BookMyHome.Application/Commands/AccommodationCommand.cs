@@ -24,10 +24,12 @@ namespace BookMyHome.Application.Commands
         }
         void IAccommodationCommand.CreateAccommodation(CreateAccommodationDto createAccommodationDto)
         {
-            var host = _hostRepository.GetHost(createAccommodationDto.HostId);
             try
             {
                 _unitOfWork.BeginTransaction();
+
+                // Load
+                var host = _hostRepository.GetHost(createAccommodationDto.HostId);
 
                 // Do
                 var accommodation = Accommodation.Create(createAccommodationDto.Price, host);
