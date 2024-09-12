@@ -1,98 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookMyHome.Application.Commands.CommandDto;
+﻿using BookMyHome.Application.Commands.CommandDto;
 using BookMyHome.Domain.DomainServices;
 using BookMyHome.Domain.Entity;
 using BookMyHome.Domain.Helpers;
 
-namespace BookMyHome.Application.Commands
+namespace BookMyHome.Application.Commands;
+
+public class BookingCommand : IBookingCommand
 {
-    public class BookingCommand : IBookingCommand
+    private readonly IAccommodationRepository _accommodationRepository;
+    private readonly IBookingRepository _bookingRepository;
+    private readonly IBookingDomainService _domainService;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public BookingCommand(IBookingRepository bookingRepository, IAccommodationRepository accommodationRepository,
+        IBookingDomainService domainService, IUnitOfWork unitOfWork)
     {
-        private readonly IBookingDomainService _domainService;
-        private readonly IBookingRepository _bookingRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IAccommodationRepository _accommodationRepository;
+        _domainService = domainService;
+        _bookingRepository = bookingRepository;
+        _accommodationRepository = accommodationRepository;
+        _unitOfWork = unitOfWork;
+    }
 
-        public BookingCommand(IBookingRepository bookingRepository, IAccommodationRepository accommodationRepository, IBookingDomainService domainService, IUnitOfWork unitOfWork)
+    void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
+    {
+        try
         {
-            _domainService = domainService;
-            _bookingRepository = bookingRepository;
-            _accommodationRepository = accommodationRepository;
-            _unitOfWork = unitOfWork;
+            _unitOfWork.BeginTransaction();
+
+            // Load
+            var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
+
+            // Do
+            var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, accommodation,
+                _domainService);
+
+            // Save
+            _bookingRepository.AddBooking(booking);
+
+            //Commit to db
+            _unitOfWork.Commit();
         }
-        void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
+        catch (Exception)
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-
-                // Load
-                var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
-                
-                // Do
-                var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, accommodation,  _domainService);
-                
-                // Save
-                _bookingRepository.AddBooking(booking);
-
-                //Commit to db
-                _unitOfWork.Commit();
-            }
-            catch (Exception)
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
+            _unitOfWork.Rollback();
+            throw;
         }
+    }
 
-        void IBookingCommand.UpdateBooking(UpdateBookingDto updateBookingDto)
+    void IBookingCommand.UpdateBooking(UpdateBookingDto updateBookingDto)
+    {
+        try
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                // Load
-                var booking = _bookingRepository.GetBooking(updateBookingDto.Id);
+            _unitOfWork.BeginTransaction();
+            // Load
+            var booking = _bookingRepository.GetBooking(updateBookingDto.Id);
 
-                // Do
-                booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
-                _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
+            // Do
+            booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
+            _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
-                // Save
-                _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
+            // Save
+            _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
-                //Commit to db
-                _unitOfWork.Commit();
-            }
-            catch (Exception)
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
+            //Commit to db
+            _unitOfWork.Commit();
         }
-
-        void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
+        catch (Exception)
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                // Load
-                var booking = _bookingRepository.GetBooking(deleteBookingDto.Id);
+            _unitOfWork.Rollback();
+            throw;
+        }
+    }
 
-                // (Do &) Save
-                _bookingRepository.DeleteBooking(booking, deleteBookingDto.RowVersion);
+    void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            // Load
+            var booking = _bookingRepository.GetBooking(deleteBookingDto.Id);
 
-                // Commmit to db
-                _unitOfWork.Commit();
-            }
-            catch (Exception)
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
+            // (Do &) Save
+            _bookingRepository.DeleteBooking(booking, deleteBookingDto.RowVersion);
+
+            // Commmit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
         }
     }
 }
