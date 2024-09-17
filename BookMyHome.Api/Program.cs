@@ -2,10 +2,8 @@ using BookMyHome.Application;
 using BookMyHome.Application.Commands;
 using BookMyHome.Application.Commands.CommandDto;
 using BookMyHome.Application.Query;
-using BookMyHome.Domain.DomainServices;
 using BookMyHome.Infrastructure;
-using BookMyHome.Infrastructure.Queries;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,64 +31,32 @@ app.UseHttpsRedirection();
 
 app.MapGet("/hello", () => "Hello world");
 
+
+//Booking
 app.MapGet("/booking", (IBookingQuery query) => query.GetBookings());
 app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id));
-app.MapPost("/booking",
-    (CreateBookingDto createBookingDto, IBookingCommand bookingCommand) =>
-        bookingCommand.CreateBooking(createBookingDto));
-app.MapPut("/booking",
-    (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) =>
-        bookingCommand.UpdateBooking(updateBookingDto));
+app.MapPost("/booking", (CreateBookingDto createBookingDto, IBookingCommand bookingCommand) =>
+    bookingCommand.CreateBooking(createBookingDto));
+app.MapPut("/booking", (UpdateBookingDto updateBookingDto, IBookingCommand bookingCommand) =>
+    bookingCommand.UpdateBooking(updateBookingDto));
+app.MapDelete("/booking", ([FromBody] DeleteBookingDto deleteBookingDto, IBookingCommand BookingCommand) =>
+BookingCommand.DeleteBooking(deleteBookingDto));
 
+app.MapPost("/host", (CreateHostDto createHostDto, IHostCommand hostCommand) =>
+    hostCommand.CreateHost(createHostDto));
+
+app.MapGet("/accommodation", (IAccommodationQuery query) => query.GetAccommodations());
+app.MapGet("/accommodation/{id}", (int id, IAccommodationQuery query) => query.GetAccommodation(id));
+app.MapPost("/accommodation", (CreateAccommodationDto createAccommodationDto, IAccommodationCommand accommodationCommand) =>
+    accommodationCommand.CreateAccommodation(createAccommodationDto));
+app.MapPut("/accommodation",
+    (UpdateAccommodationDto updateAccommodationDto, IAccommodationCommand accommodationCommand) =>
+        accommodationCommand.UpdateAccommodation(updateAccommodationDto));
+app.MapDelete("/accomodation", ([FromBody] DeleteAccommodationDto deleteAcommodationDto, IAccommodationCommand acommodationCommand) =>
+    acommodationCommand.DeleteAccommodation(deleteAcommodationDto));
+
+    app.MapGet("/accommodations/{accommodationId}/bookings", (int accommodationId, IAccommodationQuery accommodationQuery) =>
+       accommodationQuery.GetBookingsForAccommodation(accommodationId));
 
 app.Run();
 
-
-
-
-
-
-
-//var summaries = new[]
-//{
-//    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-//};
-
-//app.MapGet("/weatherforecast", () =>
-//{
-//    var forecast =  Enumerable.Range(1, 5).Select(index =>
-//        new WeatherForecast
-//        (
-//            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//            Random.Shared.Next(-20, 55),
-//            summaries[Random.Shared.Next(summaries.Length)]
-//        ))
-//        .ToArray();
-//    return forecast;
-//})
-//.WithName("GetWeatherForecast")
-//.WithOpenApi();
-
-//record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-//{
-//    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-//}
-
-
-
-
-
-
-
-
-
-//builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-//builder.Services.AddScoped<IBookingCommand, BookingCommand>();
-//builder.Services.AddScoped<IBookingQuery, BookingQuery>();
-//builder.Services.AddScoped<IBookingDomainService, BookingDomainService>();
-
-
-////Add-Migration InitialMigration -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
-////Update-Database -Context BookMyHomeContext -Project BookMyHome.DatabaseMigration
-//builder.Services.AddDbContext<BookMyHomeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyHomeDbConnection"),
-//    x => x.MigrationsAssembly("BookMyHome.DatabaseMigration")));

@@ -1,48 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookMyHome.Application.Commands.CommandDto;
+﻿using BookMyHome.Application.Commands.CommandDto;
 using BookMyHome.Domain.DomainServices;
 using BookMyHome.Domain.Entity;
+using BookMyHome.Domain.Helpers;
 
-namespace BookMyHome.Application.Commands
+namespace BookMyHome.Application.Commands;
+
+public class BookingCommand : IBookingCommand
 {
-    public class BookingCommand : IBookingCommand
+    private readonly IAccommodationRepository _accommodationRepository;
+    private readonly IBookingRepository _bookingRepository;
+    private readonly IBookingDomainService _domainService;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public BookingCommand(IBookingRepository bookingRepository, IAccommodationRepository accommodationRepository,
+        IBookingDomainService domainService, IUnitOfWork unitOfWork)
     {
-        private readonly IBookingDomainService _domainService;
-        private readonly IBookingRepository _repository;
-        public BookingCommand(IBookingRepository repository, IBookingDomainService domainService)
-        {
-            _domainService = domainService;
-            _repository = repository;
-        }
-        void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
-        {
-            // Do
-            var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, _domainService);
-            // Save
-            _repository.AddBooking(booking);
-        }
+        _domainService = domainService;
+        _bookingRepository = bookingRepository;
+        _accommodationRepository = accommodationRepository;
+        _unitOfWork = unitOfWork;
+    }
 
-        void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
+    void IBookingCommand.CreateBooking(CreateBookingDto createBookingDto)
+    {
+        try
         {
-            // Load
-            // Do
-            // Save
-        }
+            _unitOfWork.BeginTransaction();
 
-        void IBookingCommand.UpdateBooking(UpdateBookingDto updateBookingDto)
-        {
             // Load
-            var booking = _repository.GetBooking(updateBookingDto.Id);
+            var accommodation = _accommodationRepository.GetAccommodation(createBookingDto.AccommodationId);
+
+            // Do
+            var booking = Booking.Create(createBookingDto.StartDate, createBookingDto.EndDate, accommodation,
+                _domainService);
+
+            // Save
+            _bookingRepository.AddBooking(booking);
+
+            //Commit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
+        }
+    }
+
+    void IBookingCommand.UpdateBooking(UpdateBookingDto updateBookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            // Load
+            var booking = _bookingRepository.GetBooking(updateBookingDto.Id);
 
             // Do
             booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
 
             // Save
-            _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
+            _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
+
+            //Commit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
+        }
+    }
+
+    void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            // Load
+            var booking = _bookingRepository.GetBooking(deleteBookingDto.Id);
+
+            // (Do &) Save
+            _bookingRepository.DeleteBooking(booking, deleteBookingDto.RowVersion);
+
+            // Commmit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
         }
     }
 }

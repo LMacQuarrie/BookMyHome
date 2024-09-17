@@ -1,6 +1,6 @@
 ﻿namespace BookMyHome.Application.Query.QueryDto;
 
-public class BookingDto
+public record BookingDto
 {
     public int Id { get; set; }
     public DateOnly StartDate { get; set; }

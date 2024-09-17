@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMyHome.Domain.Helpers;
 using Microsoft.EntityFrameworkCore;
+using BookMyHome.Infrastructure.Repositories;
 
 namespace BookMyHome.Infrastructure
 {
@@ -17,9 +19,14 @@ namespace BookMyHome.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IBookingQuery, BookingQuery>();
             services.AddScoped<IBookingDomainService, BookingDomainService>();
+            services.AddScoped<IBookingQuery, BookingQuery>();
             services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IAccommodationQuery, AccommodationQuery>();
+            services.AddScoped<IAccommodationRepository, AccommodationRepository>();
+            services.AddScoped<IHostQuery, HostQuery>();
+            services.AddScoped<IHostRepository, HostRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
 
             // Database
             // https://github.com/dotnet/SqlClient/issues/2239

@@ -16,20 +16,25 @@ namespace BookMyHome.Domain.Entity
         public DateOnly StartDate { get; protected set; }
         public DateOnly EndDate { get; protected set; }
 
+        //nav prop
+        public Accommodation Accommodation { get; protected set; }
+
         protected Booking() { }
 
-        private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
+        private Booking(DateOnly startDate, DateOnly endDate, Accommodation accommodation,IBookingDomainService bookingDomainService)
         {
             StartDate = startDate;
             EndDate = endDate;
+            Accommodation = accommodation;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
             AssureStartDateBeforeEndDate();
             AssureNoOverLapping(bookingDomainService.GetOtherBookings(this));
         }
 
-        public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
+        public static Booking Create(DateOnly startDate, DateOnly endDate, Accommodation accommodation
+            ,IBookingDomainService bookingDomainService)
         {
-            return new Booking(startDate, endDate, bookingDomainService);
+            return new Booking(startDate, endDate, accommodation, bookingDomainService);
         }
 
 
@@ -69,6 +74,8 @@ namespace BookMyHome.Domain.Entity
             AssureStartDateBeforeEndDate();
             AssureNoOverLapping(domainService.GetOtherBookings(this));
         }
+
+        
     }
 }
 
