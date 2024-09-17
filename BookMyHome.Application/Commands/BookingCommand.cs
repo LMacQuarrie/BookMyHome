@@ -61,7 +61,7 @@ public class BookingCommand : IBookingCommand
             // Save
             _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
-            //Commit to db
+            // Commit to db
             _unitOfWork.Commit();
         }
         catch (Exception)

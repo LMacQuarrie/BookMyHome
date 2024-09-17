@@ -1,61 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookMyHome.Application.Query;
+﻿using BookMyHome.Application.Query;
 using BookMyHome.Application.Query.QueryDto;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookMyHome.Infrastructure.Queries
+namespace BookMyHome.Infrastructure.Queries;
+
+public class AccommodationQuery : IAccommodationQuery
 {
-    public class AccommodationQuery : IAccommodationQuery
+    private readonly BookMyHomeContext _db;
+
+    public AccommodationQuery(BookMyHomeContext db)
     {
-        private readonly BookMyHomeContext _db;
+        _db = db;
+    }
 
-        public AccommodationQuery(BookMyHomeContext db)
+    AccommodationDto IAccommodationQuery.GetAccommodation(int id)
+    {
+        var accommodation = _db.Accommodations.AsNoTracking().Single(a => a.Id == id);
+
+        return new AccommodationDto
         {
-            _db = db;
-        }
+            Id = accommodation.Id,
+            Price = accommodation.Price,
+            RowVersion = accommodation.RowVersion
+        };
 
-        AccommodationDto IAccommodationQuery.GetAccommodation(int id)
-        {
-            var accommodation = _db.Accommodations.AsNoTracking().Single(a => a.Id == id);
+        //Get Accommodation med bookings
+        //var accommodation = _db.Accommodations.Include(a => a.Bookings).AsNoTracking().Single(a => a.Id == id);
 
-            return new AccommodationDto
+        //return new AccommodationDto
+        //{
+        //    Id = accommodation.Id,
+        //    Price = accommodation.Price,
+        //    RowVersion = accommodation.RowVersion,
+        //    BookingDtos = accommodation.Bookings.Select(b => new BookingDto
+        //    {
+        //        Id = b.Id,
+        //        StartDate = b.StartDate,
+        //        EndDate = b.EndDate,
+        //        RowVersion = b.RowVersion
+        //    }).ToList()
+        //};
+    }
+
+    IEnumerable<AccommodationDto> IAccommodationQuery.GetAccommodations()
+    {
+        var result = _db.Accommodations.AsNoTracking()
+            .Select(a => new AccommodationDto
             {
-                Id = accommodation.Id,
-                Price = accommodation.Price,
-                RowVersion = accommodation.RowVersion
-            };
-        }
+                Id = a.Id,
+                Price = a.Price,
+                RowVersion = a.RowVersion
+            });
+        return result;
+    }
 
-        IEnumerable<AccommodationDto> IAccommodationQuery.GetAccommodations()
-        {
-            var result = _db.Accommodations.AsNoTracking()
-                .Select(a => new AccommodationDto
-                {
-                    Id = a.Id,
-                    Price = a.Price,
-                    RowVersion = a.RowVersion
-                });
-            return result;
-        }
+    IEnumerable<BookingDto> IAccommodationQuery.GetBookingsForAccommodation(int accommodationId)
+    {
+        var result = _db.Bookings
+            .AsNoTracking()
+            .Where(b => b.Accommodation.Id == accommodationId)
+            .Select(b => new BookingDto
+            {
+                Id = b.Id,
+                StartDate = b.StartDate,
+                EndDate = b.EndDate,
+                RowVersion = b.RowVersion
+            });
 
-        IEnumerable<BookingDto> IAccommodationQuery.GetBookingsForAccommodation(int accommodationId)
-        {
-            var result = _db.Bookings
-                .AsNoTracking()
-                .Where(b => b.Accommodation.Id == accommodationId)
-                .Select(b => new BookingDto
-                {
-                    Id = b.Id,
-                    StartDate = b.StartDate,
-                    EndDate = b.EndDate,
-                    RowVersion = b.RowVersion
-                });
-
-            return result;
-        }
+        return result;
     }
 }

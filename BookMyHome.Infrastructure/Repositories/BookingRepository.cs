@@ -26,6 +26,7 @@ namespace BookMyHome.Infrastructure.Repositories
         void IBookingRepository.UpdateBooking(Booking booking, byte[] rowVersion)
         {
             _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            
             _db.SaveChanges();
         }
 
