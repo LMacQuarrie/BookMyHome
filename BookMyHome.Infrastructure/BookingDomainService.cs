@@ -23,7 +23,8 @@ namespace BookMyHome.Infrastructure
                 .Where(a => a.Id == booking.Accommodation.Id)
                 .Include(a => a.Bookings)
                 .SelectMany(a => a.Bookings)
-                .Except(new List<Booking>(new[] { booking }).ToList());
+                .ToList()
+                .Except(new List<Booking>(new[] { booking }));
 
             return result;
 

@@ -23,6 +23,8 @@ namespace BookMyHome.Application.Commands
         {
             try
             {
+                _unitOfWork.BeginTransaction();
+
                 // Do
                 var host = Host.Create(createHostDto.FirstName);
 

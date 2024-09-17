@@ -41,5 +41,21 @@ namespace BookMyHome.Infrastructure.Queries
                 });
             return result;
         }
+
+        IEnumerable<BookingDto> IAccommodationQuery.GetBookingsForAccommodation(int accommodationId)
+        {
+            var result = _db.Bookings
+                .AsNoTracking()
+                .Where(b => b.Accommodation.Id == accommodationId)
+                .Select(b => new BookingDto
+                {
+                    Id = b.Id,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    RowVersion = b.RowVersion
+                });
+
+            return result;
+        }
     }
 }

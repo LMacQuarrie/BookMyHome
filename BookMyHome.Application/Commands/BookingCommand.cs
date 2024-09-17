@@ -57,7 +57,6 @@ public class BookingCommand : IBookingCommand
 
             // Do
             booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
-            _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);
 
             // Save
             _bookingRepository.UpdateBooking(booking, updateBookingDto.RowVersion);

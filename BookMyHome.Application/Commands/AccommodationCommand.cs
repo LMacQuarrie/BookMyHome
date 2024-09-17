@@ -45,11 +45,47 @@ public class AccommodationCommand : IAccommodationCommand
 
     void IAccommodationCommand.UpdateAccommodation(UpdateAccommodationDto updateAccommodationDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            // Load
+            var accommodation = _accommodationRepository.GetAccommodation(updateAccommodationDto.Id);
+
+            // Do
+            accommodation.Update(updateAccommodationDto.Price);
+
+            // Save
+            _accommodationRepository.UpdateAccommodation(accommodation, updateAccommodationDto.RowVersion);
+
+            //Commit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
+        }
     }
 
     void IAccommodationCommand.DeleteAccommodation(DeleteAccommodationDto deleteAccommodationDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            // Load
+            var accommodation = _accommodationRepository.GetAccommodation(deleteAccommodationDto.Id);
+
+            // (Do &) Save
+            accommodation.Delete();
+            _accommodationRepository.DeleteAccommodation(accommodation, deleteAccommodationDto.RowVersion);
+
+            // Commmit to db
+            _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
+        }
     }
 }

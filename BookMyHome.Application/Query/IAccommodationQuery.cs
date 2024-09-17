@@ -6,4 +6,5 @@ public interface IAccommodationQuery
 {
     AccommodationDto GetAccommodation(int Id);
     IEnumerable<AccommodationDto> GetAccommodations();
+    IEnumerable<BookingDto> GetBookingsForAccommodation(int accommodationId);
 }

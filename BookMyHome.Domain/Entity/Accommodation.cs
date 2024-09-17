@@ -48,7 +48,14 @@ namespace BookMyHome.Domain.Entity
             }
         }
 
-        protected void Delete()
+        public void Update(double price)
+        {
+            Price = price;
+            AssurePriceOverZero();
+        }
+
+
+        public void Delete()
         {
             AssureNoBookingInFuture();
         }

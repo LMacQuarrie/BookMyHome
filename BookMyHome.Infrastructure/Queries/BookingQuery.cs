@@ -42,5 +42,6 @@ namespace BookMyHome.Infrastructure.Queries
             });
             return result;
         }
+
     }
 }
