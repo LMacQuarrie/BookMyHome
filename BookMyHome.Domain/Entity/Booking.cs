@@ -1,5 +1,4 @@
-﻿using BookMyHome.Domain.DomainServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,20 +20,19 @@ namespace BookMyHome.Domain.Entity
 
         protected Booking() { }
 
-        private Booking(DateOnly startDate, DateOnly endDate, Accommodation accommodation,IBookingDomainService bookingDomainService)
+        private Booking(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
         {
             StartDate = startDate;
             EndDate = endDate;
-            Accommodation = accommodation;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
             AssureStartDateBeforeEndDate();
-            AssureNoOverLapping(bookingDomainService.GetOtherBookings(this));
+            AssureNoOverLapping(existingBookings);
         }
 
-        public static Booking Create(DateOnly startDate, DateOnly endDate, Accommodation accommodation
-            ,IBookingDomainService bookingDomainService)
+        public static Booking Create(DateOnly startDate, DateOnly endDate
+            , IEnumerable<Booking> existingBookings)
         {
-            return new Booking(startDate, endDate, accommodation, bookingDomainService);
+            return new Booking(startDate, endDate, existingBookings);
         }
 
 
@@ -66,13 +64,13 @@ namespace BookMyHome.Domain.Entity
             }
         }
 
-        public void Update(DateOnly startDate, DateOnly endDate, IBookingDomainService domainService)
+        public void Update(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
         {
             StartDate = startDate;
             EndDate = endDate;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
             AssureStartDateBeforeEndDate();
-            AssureNoOverLapping(domainService.GetOtherBookings(this));
+            AssureNoOverLapping(existingBookings);
         }
 
         

@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using BookMyHome.Domain.Helpers;
+using BookMyHome.Application.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

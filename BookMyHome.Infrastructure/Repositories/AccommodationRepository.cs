@@ -29,6 +29,8 @@ namespace BookMyHome.Infrastructure.Repositories
             _db.Accommodations.Add(accommodation);
             _db.SaveChanges();
         }
+
+
         void IAccommodationRepository.UpdateAccommodation(Accommodation accommodation, byte[] rowVersion)
         {
             _db.Entry(accommodation).Property(nameof(accommodation.RowVersion)).OriginalValue = rowVersion;
@@ -39,6 +41,25 @@ namespace BookMyHome.Infrastructure.Repositories
             _db.Entry(accommodation).Property(nameof(accommodation.RowVersion)).OriginalValue = rowVersion;
             _db.Accommodations.Remove(accommodation);
             _db.SaveChanges();
+        }
+
+        void IAccommodationRepository.AddBooking(Accommodation accommodation)
+        {
+            _db.SaveChanges();
+        }
+
+        void IAccommodationRepository.UpdateBooking(Booking booking, byte[] rowVersion)
+        {
+            _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            _db.SaveChanges();
+        }
+
+        void IAccommodationRepository.DeleteBooking(Booking booking, byte[] rowVersion)
+        {
+            _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            _db.Bookings.Remove(booking);
+            _db.SaveChanges();
+            // MANGLER I COMMAND
         }
     }
 }

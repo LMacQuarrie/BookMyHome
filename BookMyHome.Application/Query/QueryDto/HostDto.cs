@@ -11,5 +11,7 @@ namespace BookMyHome.Application.Query.QueryDto
         public int Id { get; set; }
         public string FirstName { get; set; }
         public byte[] RowVersion { get; set; }
+
+        public required IEnumerable<AccommodationDto> Accommodations { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using BookMyHome.Application.Query;
 using BookMyHome.Application;
-using BookMyHome.Domain.DomainServices;
 using BookMyHome.Infrastructure.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BookMyHome.Domain.Helpers;
+using BookMyHome.Application.Helpers;
 using Microsoft.EntityFrameworkCore;
 using BookMyHome.Infrastructure.Repositories;
 
@@ -19,9 +18,7 @@ namespace BookMyHome.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IBookingDomainService, BookingDomainService>();
             services.AddScoped<IBookingQuery, BookingQuery>();
-            services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IAccommodationQuery, AccommodationQuery>();
             services.AddScoped<IAccommodationRepository, AccommodationRepository>();
             services.AddScoped<IHostQuery, HostQuery>();
