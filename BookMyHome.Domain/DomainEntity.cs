@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookMyHome.Domain.Entity
+namespace BookMyHome.Domain
 {
     public abstract class DomainEntity
     {
         public int Id { get; protected set; }
-        [Timestamp] 
+        [Timestamp]
         public byte[] RowVersion { get; protected set; } = null!;
     }
 }
