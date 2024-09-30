@@ -3,6 +3,7 @@
 public class Accommodation : DomainEntity
 {
     private readonly List<Booking> _bookings = new List<Booking>();
+    private readonly List<Review> _reviews = new List<Review>();
 
     protected Accommodation()
     {
@@ -20,6 +21,7 @@ public class Accommodation : DomainEntity
     public Host Host { get; protected set; }
 
     public IReadOnlyCollection<Booking> Bookings => _bookings;
+    public IReadOnlyCollection<Review> Reviews => _reviews;
 
     public static Accommodation Create(double price, Host host)
     {
@@ -38,9 +40,9 @@ public class Accommodation : DomainEntity
         AssureNoBookingInFuture();
     }
 
-    public void CreateBooking(DateOnly startDate, DateOnly endDate)
+    public void CreateBooking(DateOnly startDate, DateOnly endDate, Guest guest)
     {
-        var booking = Booking.Create(startDate, endDate, Bookings);
+        var booking = Booking.Create(startDate, endDate, Bookings, guest);
         _bookings.Add(booking);
     }
 
@@ -50,6 +52,12 @@ public class Accommodation : DomainEntity
         if (booking == null) throw new ArgumentException("Booking not found");
         booking.Update(startDate, endDate, Bookings);
         return booking;
+    }
+
+    public void CreateReview(string description, double rating, Guest guest)
+    {
+        var review = Review.Create(description, rating, guest, Bookings);
+        _reviews.Add(review);
     }
 
 

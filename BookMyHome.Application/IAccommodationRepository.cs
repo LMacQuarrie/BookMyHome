@@ -17,5 +17,6 @@ namespace BookMyHome.Application
         void AddAccommodation(Accommodation accommodation);
         void UpdateAccommodation(Accommodation accommodation, byte[] rowVersion);
         void DeleteAccommodation(Accommodation accommodation, byte[] rowVersion);
+        void AddReview(Accommodation accommodation);
     }
 }

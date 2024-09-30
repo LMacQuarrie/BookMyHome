@@ -22,6 +22,7 @@ namespace BookMyHome.Infrastructure.Repositories
         {
             return _db.Accommodations
                 .Include(a => a.Bookings)
+                .ThenInclude(b => b.Guest)
                 .Single(a => a.Id == id);
         }
         void IAccommodationRepository.AddAccommodation(Accommodation accommodation)
@@ -60,6 +61,11 @@ namespace BookMyHome.Infrastructure.Repositories
             _db.Bookings.Remove(booking);
             _db.SaveChanges();
             // MANGLER I COMMAND
+        }
+
+        void IAccommodationRepository.AddReview(Accommodation accommodation)
+        {
+            _db.SaveChanges();
         }
     }
 }

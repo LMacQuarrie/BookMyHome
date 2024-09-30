@@ -6,4 +6,5 @@ public record CreateBookingDto
     public DateOnly EndDate { get; set; }
 
     public int AccommodationId { get; set; }
+    public int GuestId { get; set; }
 }

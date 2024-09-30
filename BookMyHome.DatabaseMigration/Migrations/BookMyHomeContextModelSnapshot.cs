@@ -63,6 +63,9 @@ namespace BookMyHome.DatabaseMigration.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<int>("GuestId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -76,7 +79,28 @@ namespace BookMyHome.DatabaseMigration.Migrations
 
                     b.HasIndex("AccommodationId");
 
+                    b.HasIndex("GuestId");
+
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("BookMyHome.Domain.Entity.Guest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("BookMyHome.Domain.Entity.Host", b =>
@@ -102,6 +126,42 @@ namespace BookMyHome.DatabaseMigration.Migrations
                     b.ToTable("Hosts");
                 });
 
+            modelBuilder.Entity("BookMyHome.Domain.Entity.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccommodationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GuestId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccommodationId");
+
+                    b.HasIndex("GuestId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("BookMyHome.Domain.Entity.Accommodation", b =>
                 {
                     b.HasOne("BookMyHome.Domain.Entity.Host", "Host")
@@ -121,12 +181,48 @@ namespace BookMyHome.DatabaseMigration.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookMyHome.Domain.Entity.Guest", "Guest")
+                        .WithMany("Bookings")
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Accommodation");
+
+                    b.Navigation("Guest");
+                });
+
+            modelBuilder.Entity("BookMyHome.Domain.Entity.Review", b =>
+                {
+                    b.HasOne("BookMyHome.Domain.Entity.Accommodation", "Accommodation")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AccommodationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookMyHome.Domain.Entity.Guest", "Guest")
+                        .WithMany("Reviews")
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Accommodation");
+
+                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("BookMyHome.Domain.Entity.Accommodation", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("BookMyHome.Domain.Entity.Guest", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("BookMyHome.Domain.Entity.Host", b =>

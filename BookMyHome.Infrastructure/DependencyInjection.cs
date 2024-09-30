@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookMyHome.Application.Helpers;
+using BookMyHome.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using BookMyHome.Infrastructure.Repositories;
 
@@ -24,6 +25,7 @@ namespace BookMyHome.Infrastructure
             services.AddScoped<IHostQuery, HostQuery>();
             services.AddScoped<IHostRepository, HostRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
+            services.AddScoped<IGuestRepository, GuestRepository>();
 
             // Database
             // https://github.com/dotnet/SqlClient/issues/2239
