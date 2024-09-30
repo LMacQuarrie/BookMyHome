@@ -35,6 +35,7 @@ namespace BookMyHome.Infrastructure.Queries
                 Accommodations = host.Accommodations.Select(a => new AccommodationDto
                 {
                     Id = a.Id,
+                    Price = a.Price,
                     HostId = a.Host.Id,
                     Bookings = a.Bookings.Select(b => new BookingDto
                     {

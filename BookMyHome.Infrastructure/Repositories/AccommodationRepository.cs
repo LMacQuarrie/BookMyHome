@@ -44,7 +44,7 @@ namespace BookMyHome.Infrastructure.Repositories
             _db.SaveChanges();
         }
 
-        void IAccommodationRepository.AddBooking(Accommodation accommodation)
+        void IAccommodationRepository.AddBooking()
         {
             _db.SaveChanges();
         }
@@ -63,7 +63,7 @@ namespace BookMyHome.Infrastructure.Repositories
             // MANGLER I COMMAND
         }
 
-        void IAccommodationRepository.AddReview(Accommodation accommodation)
+        void IAccommodationRepository.AddReview()
         {
             _db.SaveChanges();
         }

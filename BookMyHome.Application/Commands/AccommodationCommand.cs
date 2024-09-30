@@ -105,7 +105,7 @@ public class AccommodationCommand : IAccommodationCommand
             accommodation.CreateBooking(createBookingDto.StartDate, createBookingDto.EndDate, guest);
 
             // Save
-            _repository.AddBooking(accommodation);
+            _repository.AddBooking();
 
             _unitOfWork.Commit();
         }
@@ -167,7 +167,7 @@ public class AccommodationCommand : IAccommodationCommand
             accommodation.CreateReview(createReviewDto.Description, createReviewDto.Rating, guest);
 
             //save
-            _repository.AddReview(accommodation);
+            _repository.AddReview();
 
             _unitOfWork.Commit();
 
