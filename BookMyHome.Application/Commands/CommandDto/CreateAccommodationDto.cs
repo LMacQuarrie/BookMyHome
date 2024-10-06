@@ -11,5 +11,7 @@ namespace BookMyHome.Application.Commands.CommandDto
         public double Price { get; set; }
 
         public int HostId { get; set; }
+
+        public CreateAddressDto CreateAddressDto { get; set; }
     }
 }

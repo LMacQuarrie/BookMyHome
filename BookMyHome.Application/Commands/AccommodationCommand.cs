@@ -2,6 +2,8 @@
 using BookMyHome.Application.Helpers;
 using BookMyHome.Application.Query.QueryDto;
 using BookMyHome.Domain.Entity;
+using BookMyHome.Domain.Entity.ValueObjects;
+using BookMyHome.Domain.Services;
 
 namespace BookMyHome.Application.Commands;
 
@@ -11,17 +13,19 @@ public class AccommodationCommand : IAccommodationCommand
     private readonly IHostRepository _hostRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGuestRepository _guestRepository;
+    private readonly IAddressService _addressService;
 
     public AccommodationCommand(IAccommodationRepository repository, IHostRepository hostRepository,
-        IUnitOfWork unitOfWork, IGuestRepository guestRepository)
+        IUnitOfWork unitOfWork, IGuestRepository guestRepository, IAddressService addressService)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _hostRepository = hostRepository;
         _guestRepository = guestRepository;
+        _addressService = addressService;
     }
 
-    void IAccommodationCommand.CreateAccommodation(CreateAccommodationDto createAccommodationDto)
+    async Task IAccommodationCommand.CreateAccommodation(CreateAccommodationDto createAccommodationDto)
     {
         try
         {
@@ -32,6 +36,7 @@ public class AccommodationCommand : IAccommodationCommand
 
             // Do
             var accommodation = Accommodation.Create(createAccommodationDto.Price, host);
+            await accommodation.AddAddress(createAccommodationDto.CreateAddressDto.Street, createAccommodationDto.CreateAddressDto.City, createAccommodationDto.CreateAddressDto.HouseNumber, createAccommodationDto.CreateAddressDto.PostalCode, createAccommodationDto.CreateAddressDto.Floor, createAccommodationDto.CreateAddressDto.Door, _addressService);
 
             // Save
             _repository.AddAccommodation(accommodation);

@@ -5,13 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookMyHome.Application.Helpers;
 using BookMyHome.Domain.Entity;
+using BookMyHome.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using BookMyHome.Infrastructure.Repositories;
+using BookMyHome.Infrastructure.Services;
 
 namespace BookMyHome.Infrastructure
 {
@@ -27,8 +30,8 @@ namespace BookMyHome.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
             services.AddScoped<IGuestRepository, GuestRepository>();
 
-            //services.AddHttpClient<IAddressService, IAddressService>(client =>
-            //    client.BaseAddress = new Uri(Builder.Configuration["BMH.AddressServiceBaseUrl"]));
+            services.AddHttpClient<IAddressService, AddressService>(client =>
+                client.BaseAddress = new Uri(configuration["BMH.AddressServiceBaseUrl"]));
 
 
             // Database

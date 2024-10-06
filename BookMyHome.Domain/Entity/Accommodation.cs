@@ -1,4 +1,9 @@
-﻿namespace BookMyHome.Domain.Entity;
+﻿using BookMyHome.Domain.Entity.ValueObjects;
+using BookMyHome.Domain.Services;
+using System.Drawing;
+using System.IO;
+
+namespace BookMyHome.Domain.Entity;
 
 public class Accommodation : DomainEntity
 {
@@ -20,6 +25,8 @@ public class Accommodation : DomainEntity
     public double Price { get; protected set; }
     public Host Host { get; protected set; }
 
+    public Address Address { get; protected set; }
+
     public IReadOnlyCollection<Booking> Bookings => _bookings;
     public IReadOnlyCollection<Review> Reviews => _reviews;
 
@@ -38,6 +45,21 @@ public class Accommodation : DomainEntity
     public void Delete()
     {
         AssureNoBookingInFuture();
+    }
+
+    public async Task AddAddress(string street, string houseNumber, string city, string postalCode, string? floor,
+        string? door, IAddressService addressService)
+    {
+        var address = Address.Create(street, houseNumber, city, postalCode, floor, door);
+        try
+        {
+            await address.ValidateAddress(addressService);
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine("Kan ikke forbinde til Address Service Api");
+        }
+        Address = address;
     }
 
     public void CreateBooking(DateOnly startDate, DateOnly endDate, Guest guest)

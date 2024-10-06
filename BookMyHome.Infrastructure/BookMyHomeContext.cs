@@ -20,5 +20,11 @@ namespace BookMyHome.Infrastructure
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Accommodation>()
+                .OwnsOne(a => a.Address);
+        }
     }
 }

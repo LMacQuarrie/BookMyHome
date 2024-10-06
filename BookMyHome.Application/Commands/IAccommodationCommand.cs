@@ -9,7 +9,7 @@ namespace BookMyHome.Application.Commands
 {
     public interface IAccommodationCommand
     {
-        void CreateAccommodation(CreateAccommodationDto createAccommodationDto);
+        Task CreateAccommodation(CreateAccommodationDto createAccommodationDto);
         void UpdateAccommodation(UpdateAccommodationDto updateAccommodationDto);
         void DeleteAccommodation(DeleteAccommodationDto deleteAccommodationDto);
 
