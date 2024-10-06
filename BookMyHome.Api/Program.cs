@@ -38,7 +38,7 @@ app.MapGet("/accommodation/{accommodationId}/booking/{bookingId}", (int accommod
 app.MapPost("/accommodation/booking", (CreateBookingDto booking, IAccommodationCommand command) => command.CreateBooking(booking));
 app.MapPut("/accommodation/booking", (UpdateBookingDto booking, IAccommodationCommand command) => command.UpdateBooking(booking));
 
-
+//
 //accommodation
 app.MapGet("/accommodation", (IAccommodationQuery query) => query.GetAccommodations());
 app.MapGet("/accommodation/{id}", (int id, IAccommodationQuery query) => query.GetAccommodation(id));
