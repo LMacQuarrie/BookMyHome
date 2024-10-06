@@ -1,11 +1,4 @@
-﻿using BookMyHome.Domain.DomainServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BookMyHome.Domain.Test")]
 
@@ -18,23 +11,24 @@ namespace BookMyHome.Domain.Entity
 
         //nav prop
         public Accommodation Accommodation { get; protected set; }
+        public Guest Guest { get; set; }
 
         protected Booking() { }
 
-        private Booking(DateOnly startDate, DateOnly endDate, Accommodation accommodation,IBookingDomainService bookingDomainService)
+        private Booking(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings, Guest guest)
         {
             StartDate = startDate;
             EndDate = endDate;
-            Accommodation = accommodation;
+            Guest = guest;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
             AssureStartDateBeforeEndDate();
-            AssureNoOverLapping(bookingDomainService.GetOtherBookings(this));
+            AssureNoOverLapping(existingBookings);
         }
 
-        public static Booking Create(DateOnly startDate, DateOnly endDate, Accommodation accommodation
-            ,IBookingDomainService bookingDomainService)
+        public static Booking Create(DateOnly startDate, DateOnly endDate
+            , IEnumerable<Booking> existingBookings, Guest guest)
         {
-            return new Booking(startDate, endDate, accommodation, bookingDomainService);
+            return new Booking(startDate, endDate, existingBookings, guest);
         }
 
 
@@ -66,16 +60,16 @@ namespace BookMyHome.Domain.Entity
             }
         }
 
-        public void Update(DateOnly startDate, DateOnly endDate, IBookingDomainService domainService)
+        public void Update(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
         {
             StartDate = startDate;
             EndDate = endDate;
             AssureBookingInFuture(DateOnly.FromDateTime(DateTime.Now));
             AssureStartDateBeforeEndDate();
-            AssureNoOverLapping(domainService.GetOtherBookings(this));
+            AssureNoOverLapping(existingBookings);
         }
 
-        
+
     }
 }
 

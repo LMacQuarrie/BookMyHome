@@ -12,5 +12,9 @@ namespace BookMyHome.Application.Query.QueryDto
         public int Id { get; set; }
         public double Price { get; set; }
         public byte[] RowVersion { get; set; }
+
+        public IEnumerable<BookingDto>? Bookings { get; set; }
+        public IEnumerable<ReviewDto>? Reviews { get; set; }
+        public int HostId { get; set; }
     }
 }

@@ -11,5 +11,7 @@ namespace BookMyHome.Application.Query
     {
         HostDto GetHost(int Id);
         IEnumerable<HostDto> GetAllHosts();
+
+        HostDto? GetAccommodations(int hostId);
     }
 }

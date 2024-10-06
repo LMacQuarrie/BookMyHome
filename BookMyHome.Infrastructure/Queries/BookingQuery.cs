@@ -17,22 +17,27 @@ namespace BookMyHome.Infrastructure.Queries
             _db = db;
         }
 
-        BookingDto IBookingQuery.GetBooking(int id)
+        BookingDto IBookingQuery.GetBooking(int accommodationId, int bookingId)
         {
-            var booking = _db.Bookings.AsNoTracking().Single(a => a.Id == id);
+            var accommodation = _db.Accommodations.Include(a => a.Bookings).AsNoTracking()
+                .Single(a => a.Id == accommodationId);
+
+            var booking = accommodation.Bookings.Single(b => b.Id == bookingId);
 
             return new BookingDto
             {
                 Id = booking.Id,
                 StartDate = booking.StartDate,
                 EndDate = booking.EndDate,
+                AccommodationId = accommodation.Id,
                 RowVersion = booking.RowVersion
             };
         }
 
-        IEnumerable<BookingDto> IBookingQuery.GetBookings()
+        IEnumerable<BookingDto> IBookingQuery.GetBookings(int accommodationId)
         {
-            var result = _db.Bookings.AsNoTracking().
+            var accommodation = _db.Accommodations.Include(b => b.Bookings).AsNoTracking().Single(a => a.Id == accommodationId);
+            var result = accommodation.Bookings.
                 Select(a => new BookingDto
             {
                 Id = a.Id,

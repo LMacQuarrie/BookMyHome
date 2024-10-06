@@ -33,19 +33,12 @@ app.MapGet("/hello", () => "Hello world");
 
 
 //Booking
-app.MapGet("/booking", (IBookingQuery query) => query.GetBookings());
-app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id));
-app.MapPost("/booking", (CreateBookingDto booking, IBookingCommand command) =>
-    command.CreateBooking(booking));
-app.MapPut("/booking", (UpdateBookingDto booking, IBookingCommand command) =>
-    command.UpdateBooking(booking));
-app.MapDelete("/booking", ([FromBody] DeleteBookingDto booking, IBookingCommand command) =>
-command.DeleteBooking(booking));
+app.MapGet("/accommodation/{id}/booking", (int accommodationId, IBookingQuery query) => query.GetBookings(accommodationId));
+app.MapGet("/accommodation/{accommodationId}/booking/{bookingId}", (int accommodationId, int bookingId, IBookingQuery query) => query.GetBooking(accommodationId, bookingId));
+app.MapPost("/accommodation/booking", (CreateBookingDto booking, IAccommodationCommand command) => command.CreateBooking(booking));
+app.MapPut("/accommodation/booking", (UpdateBookingDto booking, IAccommodationCommand command) => command.UpdateBooking(booking));
 
-//Host
-app.MapPost("/host", (CreateHostDto host, IHostCommand command) =>
-    command.CreateHost(host));
-
+//
 //accommodation
 app.MapGet("/accommodation", (IAccommodationQuery query) => query.GetAccommodations());
 app.MapGet("/accommodation/{id}", (int id, IAccommodationQuery query) => query.GetAccommodation(id));
@@ -58,9 +51,21 @@ app.MapDelete("/accomodation",
     ([FromBody] DeleteAccommodationDto accommodation, IAccommodationCommand command) =>
         command.DeleteAccommodation(accommodation));
 
-app.MapGet("/accommodations/{accommodationId}/bookings",
-    (int accommodationId, IAccommodationQuery query) =>
-        query.GetBookingsForAccommodation(accommodationId));
+//bookings for accommodation
+app.MapGet("/host/{id}/accommodation",
+    (int hostId, IHostQuery query) =>
+        query.GetAccommodations(hostId));
 
+//reviews for hostens accommodations
+
+
+
+//Host
+app.MapPost("/host", (CreateHostDto host, IHostCommand command) =>
+    command.CreateHost(host));
+
+//Review
+app.MapPost("/accommodation/Review",
+    (CreateReviewDto review, IAccommodationCommand command) => command.CreateReview(review));
 
 app.Run();

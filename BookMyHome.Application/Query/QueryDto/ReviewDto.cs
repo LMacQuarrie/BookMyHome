@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BookMyHome.Application.Query.QueryDto
 {
-    public record HostDto
+    public record ReviewDto
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
+        public string Description { get; set; }
+        public double Rating { get; set; }
         public byte[] RowVersion { get; set; }
 
-        public required IEnumerable<AccommodationDto> Accommodations { get; set; }
     }
 }

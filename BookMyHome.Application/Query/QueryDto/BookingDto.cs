@@ -6,4 +6,5 @@ public record BookingDto
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public byte[] RowVersion { get; set; }
+    public int AccommodationId { get; set; }
 }
